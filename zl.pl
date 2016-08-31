@@ -1,5 +1,7 @@
 #!/usr/bin/env perl
-use Modern::Perl 2014;
+use 5.012;
+use strict;
+use warnings;
 use autodie;
 
 sub is_int {
