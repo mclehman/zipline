@@ -2,6 +2,24 @@
 use Modern::Perl 2014;
 use autodie;
 
+sub is_int {
+    my $value = shift;
+    return ($value =~ m/^\d+$/);
+}
+
+sub between {
+    my ($value, $lower, $upper) = @_;
+
+    return ($lower <= $value and $value <= $upper);
+}
+
+sub valid {
+    my $value = shift;
+    my $upper_bound = shift;
+
+    return is_int($value) && between($value, 0, $upper_bound);
+}
+
 sub main {
     my $pwd = `pwd -L`;
     chomp $pwd;
@@ -17,8 +35,16 @@ sub main {
         $index++;
     }
 
+    my $max_depth = $index - 1;
+
     my $choice = <>;
     chomp $choice;
+
+    while (not valid($choice, $max_depth)) {
+        say STDERR "The value entered was invalid. Enter a decimal number in the range 0-$max_depth.";
+        $choice = <>;
+        chomp $choice;
+    }
 
     my $command = "/";
 
