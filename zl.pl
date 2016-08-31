@@ -22,18 +22,28 @@ sub valid {
     return is_int($value) && between($value, 0, $upper_bound);
 }
 
-sub main {
-    my $pwd = `pwd -L`;
-    chomp $pwd;
-    my @levels = split /\//, $pwd;
-    $levels[0] = "/"; # Explictly set root level to /
+sub build_path {
+    my $choice = shift;
+    my @dirs = @{$_[0]};
+
+    my $command = "/";
+
+    for (my $i = 1; $i <= $choice; $i++) {
+        $command .= $dirs[$i] . "/";
+    }
+
+    return $command;
+}
+
+sub prompt {
+    my @dirs = @{$_[0]};
     my $index = 0;
     my $spacing = " ";
 
     say STDERR "Which level would you like to go up to?";
-    foreach my $level (@levels) {
-        say STDERR $spacing . $index . ": " . $level;
-        $spacing = $spacing . " ";
+    foreach my $dir (@dirs) {
+        say STDERR $spacing . $index . ": " . $dir;
+        $spacing .= " ";
         $index++;
     }
 
@@ -48,13 +58,19 @@ sub main {
         chomp $choice;
     }
 
-    my $command = "/";
+    return $choice;
+}
 
-    for (my $i = 1; $i <= $choice; $i++) {
-        $command = $command . $levels[$i] . "/";
-    }
+sub main {
+    my $pwd = `pwd -L`;
+    chomp $pwd;
 
-    say $command;
+    my @dirs = split /\//, $pwd;
+    $dirs[0] = "/"; # Explictly set root level to /
+
+    my $choice = prompt(\@dirs);
+
+    say build_path($choice, \@dirs);
 }
 
 main();
