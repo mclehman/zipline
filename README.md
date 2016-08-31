@@ -1,13 +1,12 @@
 #zipline
 
-Mac OS X CLI utility I wrote to deal with the annoyance of never knowing how many times I have to type .. to cd to a certain directory.
+This is a perl/bash reimplementation of adamnemecek's zipline (with slight UI changes) that should work on more than just OS X. Again, pure bash would be better and less of a hassle to install, but at least perl is a bit more portable than Swift.
 
-This utility should really be a bash script but then I'd have to write Bash and neither of us wants that, do we.
+Zipline allows you to select a directory higher up in your current path and switch to it without messing around with "cd ../../..".
 
 ##Installation
 
-Put the binary from /bin in your path and add the contents of zl.sh to your rc file.
+Move or put a symlink to zl.pl in your path as zipline and add the contents of zl.sh to your .bashrc/.bash_profile.
 
 
-![screenshot](https://raw.github.com/adamnemecek/zipline/master/screenshot.png)
-
+![screenshot](https://raw.github.com/mclehman/zipline/master/screenshot.png)
