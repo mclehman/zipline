@@ -26,13 +26,13 @@ sub build_path {
     my $choice = shift;
     my @dirs = @{$_[0]};
 
-    my $command = "/";
+    my $path = "/";
 
     for (my $i = 1; $i <= $choice; $i++) {
-        $command .= $dirs[$i] . "/";
+        $path .= $dirs[$i] . "/";
     }
 
-    return $command;
+    return $path;
 }
 
 sub prompt {
