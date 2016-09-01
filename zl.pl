@@ -19,6 +19,7 @@ sub valid {
     my $value = shift;
     my $upper_bound = shift;
 
+    # Short-circuiting && prevents calling between on non-numeric input.
     return is_int($value) && between($value, 0, $upper_bound);
 }
 
