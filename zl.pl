@@ -4,6 +4,8 @@ use strict;
 use warnings;
 use autodie;
 
+#test_comment
+
 sub is_int {
     my $value = shift;
     return ($value =~ m/^\d+$/);
