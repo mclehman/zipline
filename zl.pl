@@ -4,10 +4,13 @@ use strict;
 use warnings;
 use autodie;
 
+use Cwd;
+use File::Spec;
+
 #test_comment
 
 sub is_int {
-    my $value = shift;
+    my $value = shift // '';
     return ($value =~ m/^\d+$/);
 }
 
@@ -29,47 +32,39 @@ sub build_path {
     my $choice = shift;
     my @dirs = @{$_[0]};
 
-    my $path = "/";
-
-    for (my $i = 1; $i <= $choice; $i++) {
-        $path .= $dirs[$i] . "/";
-    }
-
-    return $path;
+    return File::Spec->catdir(File::Spec->rootdir(), @dirs[1..$choice]);
 }
 
 sub prompt {
     my @dirs = @{$_[0]};
-    my $index = 0;
     my $spacing = " ";
 
     say STDERR "Which level would you like to go up to?";
-    foreach my $dir (@dirs) {
-        say STDERR $spacing . $index . ": " . $dir;
+    foreach my $i (0..$#dirs) {
+        say STDERR $spacing . $i . ": " . $dirs[$i];
         $spacing .= " ";
-        $index++;
     }
 
-    my $max_depth = $index - 1;
+    my $max_depth = $#dirs;
 
-    my $choice = <>;
-    chomp $choice;
+    no warnings 'uninitialized';
+    chomp(my $choice = <>);
 
     while (not valid($choice, $max_depth)) {
         say STDERR "The value entered was invalid. Enter a decimal number in the range 0-$max_depth.";
-        $choice = <>;
-        chomp $choice;
+        chomp($choice = <>);
     }
 
     return $choice;
 }
 
 sub main {
-    my $pwd = `pwd -L`;
-    chomp $pwd;
+    my $pwd = cwd();
 
-    my @dirs = split /\//, $pwd;
-    $dirs[0] = "/"; # Explictly set root level to /
+    my @dirs = File::Spec->splitdir($pwd);
+
+    # Explictly set root level to /
+    $dirs[0] = File::Spec->rootdir();
 
     my $choice = prompt(\@dirs);
 
