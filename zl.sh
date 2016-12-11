@@ -1,5 +1,10 @@
 #!/bin/bash
 
 function zl {
-  cd "$(zipline)"
+  local choice
+  choice="$(zipline)"
+  if [ -n "$choice" ]; then
+      echo "$choice"
+      cd "$choice"
+  fi
 }
